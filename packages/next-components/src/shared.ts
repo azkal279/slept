@@ -6,7 +6,7 @@ import {
   createAsyncListActions
 } from '@alist/react'
 
-export const createNextListActions = () => {
+export let createNextListActions = () => {
   return mergeActions(
     createListActions(),
     createActions(
@@ -18,7 +18,7 @@ export const createNextListActions = () => {
   )
 }
 
-export const createNextAsyncListActions = () =>
+export let createNextAsyncListActions = () =>
   mergeActions(
     createAsyncListActions(),
     createAsyncActions(
@@ -29,8 +29,8 @@ export const createNextAsyncListActions = () =>
     )
   )
 
-export const setSelectionsByInstance = (instance, ids, records) => {
-  const targetInstance = instance.actions ? instance.actions : instance
+export let setSelectionsByInstance = (instance, ids, records) => {
+  let targetInstance = instance.actions ? instance.actions : instance
   targetInstance.setRowSelection({
     ids,
     records
