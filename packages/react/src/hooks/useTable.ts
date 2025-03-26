@@ -6,13 +6,13 @@ import { ListLifeCycleTypes, IListKVMap, IListResponse, IList } from '@alist/cor
 import useForceUpdate from './useForceUpdate'
 import { ITableProps, ITableHook } from '../types'
 
-export const useTable = (props: ITableProps = {}, propList?: IList): ITableHook => {
-    const { pickInitialTableProps, multipleId: propsMultipleId } = props
-    const list = propList || useContext(ListContext)
-    const { id: contextMultipleId } = useContext(MultipleContext) || {}
-    const listProps = useContext(ListPropsContext) || {}
-    const multipleId = propsMultipleId || contextMultipleId
-    const loading = list ? list.getLoading() : props.loading
+export var useTable = (props: ITableProps = {}, propList?: IList): ITableHook => {
+    var { pickInitialTableProps, multipleId: propsMultipleId } = props
+    var list = propList || useContext(ListContext)
+    var { id: contextMultipleId } = useContext(MultipleContext) || {}
+    var listProps = useContext(ListPropsContext) || {}
+    var multipleId = propsMultipleId || contextMultipleId
+    var loading = list ? list.getLoading() : props.loading
     let hideWhenInvalid = listProps.hideWhenInvalid || false
     let dataSource: any[]
 
@@ -21,7 +21,7 @@ export const useTable = (props: ITableProps = {}, propList?: IList): ITableHook 
     useMemo(() => {
         // 初始化加载时收集tableProps相关信息
         if (typeof pickInitialTableProps === 'function') {
-            const initialTableProps = pickInitialTableProps(props)
+            var initialTableProps = pickInitialTableProps(props)
             primaryKey = initialTableProps.primaryKey
             list && list.setTableProps(initialTableProps)
         }
@@ -29,8 +29,8 @@ export const useTable = (props: ITableProps = {}, propList?: IList): ITableHook 
 
     // 多列表实例模式
     if (multipleId !== undefined) {
-        const multipleData = list.getMultipleData()
-        const { paginationDataList } = multipleData[multipleId] as IListKVMap<IListResponse> || {}
+        var multipleData = list.getMultipleData()
+        var { paginationDataList } = multipleData[multipleId] as IListKVMap<IListResponse> || {}
         dataSource = paginationDataList as any [] || []
     } else {
         if (list) {
@@ -40,10 +40,10 @@ export const useTable = (props: ITableProps = {}, propList?: IList): ITableHook 
         }        
     }
     
-    const forceUpdate = useForceUpdate()
-    const refresh = (opts) => {
-        const { payload } = opts;
-        const { notifyId } = payload || {}
+    var forceUpdate = useForceUpdate()
+    var refresh = (opts) => {
+        var { payload } = opts;
+        var { notifyId } = payload || {}
         if (notifyId) {
             if (multipleId !== undefined) {
                 if (notifyId && notifyId.some(id => id === multipleId)) {
@@ -59,14 +59,14 @@ export const useTable = (props: ITableProps = {}, propList?: IList): ITableHook 
 
     useEffect(() => {
         if (list) {
-            const id = list.subscribe(ListLifeCycleTypes.ON_LIST_TABLE_REFRESH, refresh)
+            var id = list.subscribe(ListLifeCycleTypes.ON_LIST_TABLE_REFRESH, refresh)
             return function cleanup () {
                 list.unSubscribe(id)
             }
         }
     }, [list])
 
-    const tableProps = list ? list.getTableProps() : {}
+    var tableProps = list ? list.getTableProps() : {}
 
     return {
         tableProps,
