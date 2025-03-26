@@ -1,0 +1,19 @@
+{
+  "packages": [
+    "packages/*"
+  ],
+  "version": "1.0.59",
+  "command": {
+    "bootstrap": {
+      "npmClientArgs": [
+        "--no-package-lock"
+      ]
+    },
+    "publish": {
+      "allowBranch": "master",
+      "ignoreChanges": [
+        "*.md"
+      ]
+    }
+  }
+}
