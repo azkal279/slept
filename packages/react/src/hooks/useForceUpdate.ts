@@ -5,10 +5,10 @@ import { useCallback, useState } from 'react';
 //   when multiple calls to forceUpdate are batched.
 
 export default function useForceUpdate(): () => void {
-  const [ , dispatch ] = useState<{}>(Object.create(null));
+  let [ , dispatch ] = useState<{}>(Object.create(null));
 
   // Turn dispatch(required_parameter) into dispatch().
-  const memoizedDispatch = useCallback(
+  let memoizedDispatch = useCallback(
     (): void => {
       dispatch(Object.create(null));
     },
