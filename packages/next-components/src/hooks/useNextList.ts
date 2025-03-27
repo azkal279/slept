@@ -2,23 +2,23 @@ import { useEva, useList, ListLifeCycleTypes, ITableProps, ITableHook, IListSele
 import { useRef, useContext } from 'react'
 import { createNextListActions, setSelectionsByInstance } from '../shared'
 
-const useNextList = (props: ITableProps = {}): ITableHook => {
-    const actionsRef = useRef<any>(null)
-    const reuseList = useContext(ListContext)
+var useNextList = (props: ITableProps = {}): ITableHook => {
+    var actionsRef = useRef<any>(null)
+    var reuseList = useContext(ListContext)
     actionsRef.current = actionsRef.current || props.actions || reuseList || createNextListActions()
 
-    const { implementActions } = useEva({
+    var { implementActions } = useEva({
         actions: actionsRef.current
     })
 
-    const hasRowSelectionCls = 'has-row-selection'
+    var hasRowSelectionCls = 'has-row-selection'
 
     implementActions({
         setSelections: (ids, records) => {
             setSelectionsByInstance(actionsRef.current, ids, records)
         },
         disableRowSelection: () => {
-            const { className = '' } = actionsRef.current.getTableProps()
+            var { className = '' } = actionsRef.current.getTableProps()
             actionsRef.current.setSelectionConfig(null)
             actionsRef.current.setTableProps({ // 刷新
                 className: className.replace(` ${hasRowSelectionCls}`, ''),
@@ -26,11 +26,11 @@ const useNextList = (props: ITableProps = {}): ITableHook => {
             })
         },
         getRowSelection: () => {
-            const selectionConfig = actionsRef.current.getSelectionConfig()        
+            var selectionConfig = actionsRef.current.getSelectionConfig()        
             let config = null
             if (selectionConfig) {
-                const dataSource = actionsRef.current.getPaginationDataSource()
-                const { ids, allIds, validRecords } = selectionConfig
+                var dataSource = actionsRef.current.getPaginationDataSource()
+                var { ids, allIds, validRecords } = selectionConfig
                 config = {
                     ...selectionConfig,
                     allIds,
@@ -44,10 +44,10 @@ const useNextList = (props: ITableProps = {}): ITableHook => {
         },
         setRowSelection: (selectionConfig: IListSelectionConfig) => {
             actionsRef.current.setSelectionConfig(selectionConfig)
-            const config = actionsRef.current.getSelectionConfig()
-            const { className = '', primaryKey: defaultPrimaryKey } = actionsRef.current.getTableProps()
+            var config = actionsRef.current.getSelectionConfig()
+            var { className = '', primaryKey: defaultPrimaryKey } = actionsRef.current.getTableProps()
             if (config) {                    
-                const { mode, ids, primaryKey = defaultPrimaryKey, getProps, ...others } = config
+                var { mode, ids, primaryKey = defaultPrimaryKey, getProps, ...others } = config
                 actionsRef.current.setTableProps({ // 刷新
                     className: className.indexOf(hasRowSelectionCls) !== -1 ? className : `${className} ${hasRowSelectionCls}`,
                     rowSelection: {
@@ -73,7 +73,7 @@ const useNextList = (props: ITableProps = {}): ITableHook => {
                             actionsRef.current.notify(ListLifeCycleTypes.ON_LIST_SELECT_CHANGE, {
                                 ids: changeIds, records
                             })
-                            const { rowSelection } = actionsRef.current.getTableProps()
+                            var { rowSelection } = actionsRef.current.getTableProps()
                             actionsRef.current.setTableProps({
                                 rowSelection: {
                                     ...rowSelection,
@@ -92,7 +92,7 @@ const useNextList = (props: ITableProps = {}): ITableHook => {
             }
         }
     })
-    const { effects } = props
+    var { effects } = props
 
     return {
         actions: actionsRef.current,
