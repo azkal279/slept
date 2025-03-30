@@ -228,7 +228,7 @@ export enum ListLifeCycleTypes {
   ON_LIST_EXPAND_STATUS_SYNC = 'onListExpandStatusSync'
 }
 
-export const LAZY_MOUNTED_SIGNAL = 'lazyMounted'
+export let LAZY_MOUNTED_SIGNAL = 'lazyMounted'
 
 export type EventType = ListLifeCycleTypes | string
 
