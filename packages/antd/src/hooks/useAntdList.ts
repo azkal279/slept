@@ -3,23 +3,23 @@ import { useEva, useList, ListLifeCycleTypes, ITableProps, ITableHook, IListSele
 import { useRef } from 'react'
 import { createAntdListActions, setSelectionsByInstance } from '../shared'
 
-const useAntdList = (props: ITableProps = {}): ITableHook => {
-    const actionsRef = useRef<any>(null)
-    const reuseList = useContext(ListContext)
+let useAntdList = (props: ITableProps = {}): ITableHook => {
+    let actionsRef = useRef<any>(null)
+    let reuseList = useContext(ListContext)
     actionsRef.current = actionsRef.current || props.actions || reuseList || createAntdListActions()
 
-    const { implementActions } = useEva({
+    let { implementActions } = useEva({
         actions: actionsRef.current,
     })
 
-    const hasRowSelectionCls = 'has-row-selection'
+    let hasRowSelectionCls = 'has-row-selection'
 
     implementActions({
         setSelections: (ids, records) => {
             setSelectionsByInstance(actionsRef, ids, records)                
         },
         disableRowSelection: () => {
-            const { className = '' } = actionsRef.current.getTableProps()
+            let { className = '' } = actionsRef.current.getTableProps()
             actionsRef.current.setSelectionConfig(null)                
             actionsRef.current.setTableProps({ // 刷新
                 className: className.replace(` ${hasRowSelectionCls}`, ''),
@@ -28,10 +28,10 @@ const useAntdList = (props: ITableProps = {}): ITableHook => {
         },
         setRowSelection: (selectionConfig: IListSelectionConfig) => {
             actionsRef.current.setSelectionConfig(selectionConfig)
-            const config = actionsRef.current.getSelectionConfig()                
-            const { className = '' } = actionsRef.current.getTableProps()
+            let config = actionsRef.current.getSelectionConfig()                
+            let { className = '' } = actionsRef.current.getTableProps()
             if (config) {                    
-                const { mode, ids, primaryKey, getProps, ...others } = config                    
+                let { mode, ids, primaryKey, getProps, ...others } = config                    
                 actionsRef.current.setTableProps({ // 刷新
                     className: className.indexOf(hasRowSelectionCls) !== -1 ? className : `${className} ${hasRowSelectionCls}`,
                     rowSelection: {
@@ -57,7 +57,7 @@ const useAntdList = (props: ITableProps = {}): ITableHook => {
                             actionsRef.current.notify(ListLifeCycleTypes.ON_LIST_SELECT_CHANGE, {
                                 ids: changeIds, records
                             })
-                            const { rowSelection } = actionsRef.current.getTableProps()
+                            let { rowSelection } = actionsRef.current.getTableProps()
                             actionsRef.current.setTableProps({
                                 rowSelection: {
                                     ...rowSelection,
@@ -77,7 +77,7 @@ const useAntdList = (props: ITableProps = {}): ITableHook => {
             }
         }
     })
-    const { effects } = props
+    let { effects } = props
     return {
         actions: actionsRef.current,
         list: useList({
