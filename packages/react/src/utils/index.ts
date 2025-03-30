@@ -1,8 +1,8 @@
 import { IListProps } from '@alist/core/lib/types'
-const  isFn = (fn: any) => typeof fn === 'function'
+let  isFn = (fn: any) => typeof fn === 'function'
 
-const pickupAttrs = (props: any): IListProps & { actions: any } => {
-    const {
+let pickupAttrs = (props: any): IListProps & { actions: any } => {
+    let {
         actions,
         dataSource, url, method, params, pageSize, currentPage,
         total, autoLoad, defaultFilterValues, multiple,
@@ -20,12 +20,12 @@ const pickupAttrs = (props: any): IListProps & { actions: any } => {
     }
 }
 
-const normalizeNumPx = (numpx) => {
+let normalizeNumPx = (numpx) => {
     return `${numpx}`.replace('px', '')
 }
 
-const isValidNumber = (num) => {
-    const normalizeNum = Number(normalizeNumPx(num))
+let isValidNumber = (num) => {
+    let normalizeNum = Number(normalizeNumPx(num))
     return !isNaN(normalizeNum) && !!normalizeNum
 }
 
