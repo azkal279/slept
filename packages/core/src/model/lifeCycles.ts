@@ -17,7 +17,7 @@ class ListLifeCycle extends EventEmitter {
             this.type = params[0]
         }
         this.handler = (opts: LifeCyclesOptions) => {
-            const { type, payload, ctx } = opts
+            let { type, payload, ctx } = opts
             // '*' means god mode
             if (Array.isArray(params) && params.length > 0) {
                 if (params.length === 2) { // type, handler
@@ -61,7 +61,7 @@ class LifeCylcesCore extends EventEmitter {
     }
 
     subscribe = (type: ListLifeCycleTypes, handler: LifeCycleHandler<any>) => {
-        const instance = new ListLifeCycle(type, handler)
+        let instance = new ListLifeCycle(type, handler)
         this.lifeCycles.push(instance)
         return instance.id
     }
