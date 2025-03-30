@@ -1,12 +1,12 @@
 import axios from 'axios'
 
-const dataTypes = ['json', 'html']
+var dataTypes = ['json', 'html']
 
-const buildParams = data => {
+var buildParams = data => {
   let dataStr = data
   if (data && typeof data !== 'string') {
-    const dataStrArr = []
-        for (const prop in data) {  // eslint-disable-line
+    var dataStrArr = []
+        for (var prop in data) {  // eslint-disable-line
       dataStrArr.unshift(
         `${encodeURIComponent(prop)}=${encodeURIComponent(
           typeof data[prop] === 'object'
@@ -20,7 +20,7 @@ const buildParams = data => {
   return dataStr
 }
 
-const beforeRequest = (url, data, dataType) => {
+var beforeRequest = (url, data, dataType) => {
   if (typeof data === 'string' && dataTypes.indexOf(data) !== -1) {
     dataType = data
     data = null
@@ -32,7 +32,7 @@ const beforeRequest = (url, data, dataType) => {
     dataType
   }
 }
-const afterRequest = (dataType, rawFetch) => {
+var afterRequest = (dataType, rawFetch) => {
   if (dataType === 'json') {
     rawFetch = rawFetch.then(response => response.data)
   } else if (dataType === 'html') {
@@ -41,14 +41,14 @@ const afterRequest = (dataType, rawFetch) => {
   return rawFetch
 }
 
-const post = (
+var post = (
   url: string,
   data: any,
   dataType: string,
   _customHeader?: any
 ) => {
   ;({ url, data, dataType } = beforeRequest(url, data, dataType))
-  const rawFetch = axios(url, {
+  var rawFetch = axios(url, {
     method: 'POST',
     headers: {
       Accept: 'application/json, text/plain, */*',
@@ -62,12 +62,12 @@ const post = (
   return afterRequest(dataType, rawFetch)
 }
 
-const get = (url: string, data, dataType: string, _customHeader: any) => {
+var get = (url: string, data, dataType: string, _customHeader: any) => {
   ;({ url, data, dataType } = beforeRequest(url, data, dataType))
   if (data) {
     url += (/\?/.test(url) ? '&' : '?') + data
   }
-  const rawFetch = axios(url, {
+  var rawFetch = axios(url, {
     headers: {
       Accept: 'application/json, text/plain, */*',
       'Content-Type': 'application/x-www-form-urlencoded charset=UTF-8',
