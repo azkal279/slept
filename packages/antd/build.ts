@@ -4,13 +4,13 @@ import tsImportPluginFactory from 'ts-import-plugin'
 import glob from 'glob'
 import * as fs from 'fs-extra'
 
-const transformer = tsImportPluginFactory({
+let transformer = tsImportPluginFactory({
   libraryName: 'antd',
   // style: 'css',
 })
 
 function buildESM() {
-  const { fileNames, options } = getCompileConfig(require.resolve('./tsconfig.json'), {
+  let { fileNames, options } = getCompileConfig(require.resolve('./tsconfig.json'), {
     outDir: './esm',
     module: ts.ModuleKind.ESNext
   })
@@ -18,11 +18,11 @@ function buildESM() {
   console.log('esm build successfully')
 }
 
-const TEMP_OUT_DIR = './temp_esm'
-const TEMP_OUT_DIR_UMD = './temp_umd'
+let TEMP_OUT_DIR = './temp_esm'
+let TEMP_OUT_DIR_UMD = './temp_umd'
 
 function buildTempESM() {
-  const { fileNames, options } = getCompileConfig(require.resolve('./tsconfig.json'), {
+  let { fileNames, options } = getCompileConfig(require.resolve('./tsconfig.json'), {
     outDir: TEMP_OUT_DIR,
     module: ts.ModuleKind.ESNext
   })
@@ -44,7 +44,7 @@ function clearTempUMD() {
 }
 
 function buildES5() {
-  const rootNames = glob.sync(`${TEMP_OUT_DIR}/**/*.js`)
+  let rootNames = glob.sync(`${TEMP_OUT_DIR}/**/*.js`)
   compile(rootNames, {
     allowJs: true,
     esModuleInterop: true,
@@ -58,7 +58,7 @@ function buildES5() {
 }
 
 function buildTempUMD() {
-  const { fileNames, options } = getCompileConfig(require.resolve('./tsconfig.json'), {
+  let { fileNames, options } = getCompileConfig(require.resolve('./tsconfig.json'), {
     moduleResolution: ts.ModuleResolutionKind.Classic,
     allowUmdGlobalAccess: true,
     module: ts.ModuleKind.UMD,
@@ -70,7 +70,7 @@ function buildTempUMD() {
 }
 
 function buildUMD() {
-  const rootNames = glob.sync(`${TEMP_OUT_DIR_UMD}/**/*.js`)
+  let rootNames = glob.sync(`${TEMP_OUT_DIR_UMD}/**/*.js`)
   compile(rootNames, {
     allowJs: true,
     allowUmdGlobalAccess: true,
