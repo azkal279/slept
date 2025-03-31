@@ -4,15 +4,15 @@ import { ListLifeCycleTypes, IList } from '@alist/core'
 import useForceUpdate from '../hooks/useForceUpdate'
 import { IFilterHook, IFilterProps } from '../types'
 
-export const useFilter = (props: IFilterProps, propsList?: IList): IFilterHook => {
-    const filterRef = useRef(props.form || null)
-    const { useForm, effects, mirror } = props
-    const list = propsList || useContext(ListContext)
-    const filterProps = list.getFilterProps()
-    const latestInstance = list.getFilterInstance()
-    const mirrorProps: any = mirror ? { value: latestInstance.getFormState(state => state.values) } : {}
+export let useFilter = (props: IFilterProps, propsList?: IList): IFilterHook => {
+    let filterRef = useRef(props.form || null)
+    let { useForm, effects, mirror } = props
+    let list = propsList || useContext(ListContext)
+    let filterProps = list.getFilterProps()
+    let latestInstance = list.getFilterInstance()
+    let mirrorProps: any = mirror ? { value: latestInstance.getFormState(state => state.values) } : {}
 
-    const filterInstance = useForm({
+    let filterInstance = useForm({
         ...mirrorProps,
         ...props,
         ...filterProps,
@@ -32,10 +32,10 @@ export const useFilter = (props: IFilterProps, propsList?: IList): IFilterHook =
 
     useEffect(() => {
         if (mirror) {
-            const idMirror = filterInstance.subscribe(({ type, payload }) => {
+            let idMirror = filterInstance.subscribe(({ type, payload }) => {
                 if (type === 'onFieldChange') {
-                    const fieldState = payload.getState()
-                    const { name, value, props, values, editable } = fieldState
+                    let fieldState = payload.getState()
+                    let { name, value, props, values, editable } = fieldState
                     latestInstance.setFieldState(name, state => {
                         state.value = value
                         state.values = values
@@ -50,13 +50,13 @@ export const useFilter = (props: IFilterProps, propsList?: IList): IFilterHook =
         }        
     }, [])
 
-    const forceUpdate = useForceUpdate()
-    const refresh = () => {
+    let forceUpdate = useForceUpdate()
+    let refresh = () => {
         forceUpdate()
     }
 
     useEffect(() => {
-        const id = list.subscribe(ListLifeCycleTypes.ON_LIST_FILTER_REFRESH, refresh)
+        let id = list.subscribe(ListLifeCycleTypes.ON_LIST_FILTER_REFRESH, refresh)
         return function cleanup() {
             list.unSubscribe(id)
         }
