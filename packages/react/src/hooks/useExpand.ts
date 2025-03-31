@@ -4,17 +4,17 @@ import { ListLifeCycleTypes } from '@alist/core'
 import useForceUpdate from './useForceUpdate'
 import { IConsumerProps } from '../types'
 
-export const useExpand = (props: IConsumerProps) => {
-    const { form } = props
-    const list = useContext(ListContext)
-    const formInstance = form || list.getFilterInstance()
-    const forceUpdate = useForceUpdate()
-    const refresh = () => {
+export let useExpand = (props: IConsumerProps) => {
+    let { form } = props
+    let list = useContext(ListContext)
+    let formInstance = form || list.getFilterInstance()
+    let forceUpdate = useForceUpdate()
+    let refresh = () => {
         forceUpdate()
     }
 
     useEffect(() => {
-        const fnRef = formInstance.subscribe(({ type }) => {
+        let fnRef = formInstance.subscribe(({ type }) => {
             if ([ListLifeCycleTypes.ON_LIST_FILTER_ITEM_EXPAND,
                 ListLifeCycleTypes.ON_LIST_FILTER_ITEM_COLLAPSE,
                 ListLifeCycleTypes.ON_LIST_EXPAND_STATUS_SYNC,
@@ -27,7 +27,7 @@ export const useExpand = (props: IConsumerProps) => {
         }
     }, [formInstance])
 
-    const statsProps: any = {}
+    let statsProps: any = {}
     if (list) {
         statsProps.expandStatus = list.getExpandStatus()
         statsProps.toggleExpandStatus = list.toggleExpandStatus
