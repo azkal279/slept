@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
 import { ListDomain } from '../shared'
 
-export const useListDomain = () => {
-    const listDomain = useMemo(() => {
+export let useListDomain = () => {
+    let listDomain = useMemo(() => {
         return new ListDomain()
     }, [])
     return listDomain
