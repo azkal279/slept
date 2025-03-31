@@ -2,8 +2,8 @@ import createList from '../index'
 
 describe('createList', () => {
     test('base', () => {
-      const actions = createList()
-      const apiList = [
+      let actions = createList()
+      let apiList = [
         "notify",
         "subscribe",
         "unSubscribe",
@@ -78,8 +78,8 @@ describe('lifecycles', () => {
 
 describe('pagination', () => {
   test('get pagination', () => {
-    const actions = createList()
-    const pageData = actions.getPageData()
+    let actions = createList()
+    let pageData = actions.getPageData()
     expect(pageData).toEqual({
       pageSize: 10,
       currentPage: 1,
@@ -89,14 +89,14 @@ describe('pagination', () => {
   })
 
   test('set pagination', () => {
-    const actions = createList()
-    const data = {
+    let actions = createList()
+    let data = {
       pageSize: 10,
       currentPage: 2,
       total: 50,
     }
     actions.setPageData(data)
-    const pageData = actions.getPageData()
+    let pageData = actions.getPageData()
     expect(pageData).toEqual({
       ...data,
       totalPages: 0
@@ -114,32 +114,32 @@ describe('on', () => {
 
 describe('dataSource', () => {
   test('get dataSource', () => {
-    const actions = createList()
-    const dataSource = actions.getDataSource()
+    let actions = createList()
+    let dataSource = actions.getDataSource()
     expect(dataSource).toEqual([])
   })
 
   test('set dataSource', () => {
-    const actions = createList()
-    const data = [{ id: 1, data: 1 }, { id: 2, data: 2 }]
+    let actions = createList()
+    let data = [{ id: 1, data: 1 }, { id: 2, data: 2 }]
     actions.setDataSource(data)
-    const dataSource = actions.getDataSource()
+    let dataSource = actions.getDataSource()
     expect(dataSource).toEqual(data)
   })
 })
 
 describe('multipleData', () => {
   test('get multipleData', () => {
-    const actions = createList()
-    const multipleData = actions.getMultipleData()
+    let actions = createList()
+    let multipleData = actions.getMultipleData()
     expect(multipleData).toEqual({})
   })
 
   test('set multipleData', () => {
-    const actions = createList()
-    const data = { list1: [], list2: [] }
+    let actions = createList()
+    let data = { list1: [], list2: [] }
     actions.setMultipleData(data)
-    const multipleData = actions.getMultipleData()
+    let multipleData = actions.getMultipleData()
     expect(multipleData).toEqual({
       "list1":  {
         "currentPage": 1,
@@ -215,16 +215,16 @@ describe('params', () => {
 
 describe('filterData', () => {
   test('get filterData', () => {
-    const actions = createList()
-    const filterData = actions.getFilterData()
+    let actions = createList()
+    let filterData = actions.getFilterData()
     expect(filterData).toEqual({})
   })
 
   test('set filterData', () => {
-    // const actions = createList()
-    // const data = { username: 'abc' }
+    // let actions = createList()
+    // let data = { username: 'abc' }
     // actions.setFilterData(data)
-    // const filterData = actions.getFilterData()
+    // let filterData = actions.getFilterData()
     // expect(filterData).toEqual(data)
   })
 })
