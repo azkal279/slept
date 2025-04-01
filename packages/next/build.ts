@@ -4,13 +4,13 @@ import tsImportPluginFactory from 'ts-import-plugin'
 import glob from 'glob'
 import * as fs from 'fs-extra'
 
-let transformer = tsImportPluginFactory({
+const transformer = tsImportPluginFactory({
   libraryName: '@alifd/next',
   //style: importPath => `${importPath}/style`,
 })
 
 function buildESM() {
-  let { fileNames, options } = getCompileConfig(require.resolve('./tsconfig.json'), {
+  const { fileNames, options } = getCompileConfig(require.resolve('./tsconfig.json'), {
     outDir: './esm',
     module: ts.ModuleKind.ESNext
   })
@@ -18,10 +18,10 @@ function buildESM() {
   console.log('esm build successfully')
 }
 
-let TEMP_OUT_DIR = './temp_esm'
+const TEMP_OUT_DIR = './temp_esm'
 
 function buildTempESM() {
-  let { fileNames, options } = getCompileConfig(require.resolve('./tsconfig.json'), {
+  const { fileNames, options } = getCompileConfig(require.resolve('./tsconfig.json'), {
     outDir: TEMP_OUT_DIR,
     module: ts.ModuleKind.ESNext
   })
@@ -37,7 +37,7 @@ function clearTempESM() {
 }
 
 function buildES5() {
-  let rootNames = glob.sync(`${TEMP_OUT_DIR}/**/*.js`)
+  const rootNames = glob.sync(`${TEMP_OUT_DIR}/**/*.js`)
   compile(rootNames, {
     allowJs: true,
     esModuleInterop: true,
