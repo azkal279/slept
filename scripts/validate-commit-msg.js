@@ -10,22 +10,22 @@
 
 'use strict'
 
-const fs = require('fs')
-const util = require('util')
-const resolve = require('path').resolve
-const findup = require('findup')
-const semverRegex = require('semver-regex')
+let fs = require('fs')
+let util = require('util')
+let resolve = require('path').resolve
+let findup = require('findup')
+let semverRegex = require('semver-regex')
 
-const config = getConfig()
-const MAX_LENGTH = config.maxSubjectLength || 100
-const IGNORED = new RegExp(
+let config = getConfig()
+let MAX_LENGTH = config.maxSubjectLength || 100
+let IGNORED = new RegExp(
   util.format('(^WIP)|(^v)|(^%s$)', semverRegex().source)
 )
 /* eslint-disable no-useless-escape */
 // fixup! and squash! are part of Git, commits tagged with them are not intended to be merged, cf. https://git-scm.com/docs/git-commit
-const PATTERN = /^((fixup! |squash! )?(\w+)(?:\(([^\)\s]+)\))?: (.+))(?:\n|$)/
-const MERGE_COMMIT_PATTERN = /^Merge /
-const error = function() {
+let PATTERN = /^((fixup! |squash! )?(\w+)(?:\(([^\)\s]+)\))?: (.+))(?:\n|$)/
+let MERGE_COMMIT_PATTERN = /^Merge /
+let error = function() {
   // gitx does not display it
   // http://gitx.lighthouseapp.com/projects/17830/tickets/294-feature-display-hook-error-message-when-hook-fails
   // https://groups.google.com/group/gitx/browse_thread/thread/a03bcab60844b812
@@ -38,29 +38,29 @@ const error = function() {
   )
 }
 
-const validateMessage = function(raw) {
-  const types = (config.types = config.types || 'conventional-commit-types')
+let validateMessage = function(raw) {
+  let types = (config.types = config.types || 'conventional-commit-types')
 
   // resolve types from a module
   if (typeof types === 'string' && types !== '*') {
     types = Object.keys(require(types).types)
   }
 
-  const messageWithBody = (raw || '')
+  let messageWithBody = (raw || '')
     .split('\n')
     .filter(function(str) {
       return str.indexOf('#') !== 0
     })
     .join('\n')
 
-  const message = messageWithBody.split('\n').shift()
+  let message = messageWithBody.split('\n').shift()
 
   if (message === '') {
     console.log('Aborting commit due to empty commit message.')
     return false
   }
 
-  const isValid = true
+  let isValid = true
 
   if (MERGE_COMMIT_PATTERN.test(message)) {
     console.log('Merge commit detected.')
@@ -72,20 +72,20 @@ const validateMessage = function(raw) {
     return true
   }
 
-  const match = PATTERN.exec(message)
+  let match = PATTERN.exec(message)
 
   if (!match) {
     error('does not match "<type>(<scope>): <subject>" !')
     isValid = false
   } else {
-    const firstLine = match[1]
-    const squashing = !!match[2]
-    const type = match[3]
-    // const scope = match[4]
-    const subject = match[5]
+    let firstLine = match[1]
+    let squashing = !!match[2]
+    let type = match[3]
+    // let scope = match[4]
+    let subject = match[5]
 
-    const SUBJECT_PATTERN = new RegExp(config.subjectPattern || '.+')
-    const SUBJECT_PATTERN_ERROR_MSG =
+    let SUBJECT_PATTERN = new RegExp(config.subjectPattern || '.+')
+    let SUBJECT_PATTERN_ERROR_MSG =
       config.subjectPatternErrorMsg || 'subject does not match subject pattern!'
 
     if (firstLine.length > MAX_LENGTH && !squashing) {
@@ -125,7 +125,7 @@ const validateMessage = function(raw) {
     return true
   }
 
-  const argInHelp = config.helpMessage && config.helpMessage.indexOf('%s') !== -1
+  let argInHelp = config.helpMessage && config.helpMessage.indexOf('%s') !== -1
 
   if (argInHelp) {
     console.log(config.helpMessage, messageWithBody)
@@ -148,18 +148,18 @@ exports.config = config
 // hacky start if not run by mocha :-D
 // istanbul ignore next
 if (process.argv.join('').indexOf('mocha') === -1) {
-  const commitMsgFile = process.argv[2] || getGitFolder() + '/COMMIT_EDITMSG'
-  const incorrectLogFile = commitMsgFile.replace(
+  let commitMsgFile = process.argv[2] || getGitFolder() + '/COMMIT_EDITMSG'
+  let incorrectLogFile = commitMsgFile.replace(
     'COMMIT_EDITMSG',
     'logs/incorrect-commit-msgs'
   )
 
-  const hasToString = function hasToString(x) {
+  let hasToString = function hasToString(x) {
     return x && typeof x.toString === 'function'
   }
   /* eslint-disable handle-callback-err */
   fs.readFile(commitMsgFile, function(err, buffer) {
-    const msg = getCommitMessage(buffer)
+    let msg = getCommitMessage(buffer)
 
     if (!validateMessage(msg)) {
       fs.appendFile(incorrectLogFile, msg + '\n', function() {
@@ -176,19 +176,19 @@ if (process.argv.join('').indexOf('mocha') === -1) {
 }
 
 function getConfig() {
-  const pkgFile = findup.sync(process.cwd(), 'package.json')
-  const pkg = JSON.parse(fs.readFileSync(resolve(pkgFile, 'package.json')))
+  let pkgFile = findup.sync(process.cwd(), 'package.json')
+  let pkg = JSON.parse(fs.readFileSync(resolve(pkgFile, 'package.json')))
   return (pkg && pkg.config && pkg.config['validate-commit-msg']) || {}
 }
 
 function getGitFolder() {
-  const gitDirLocation = './.git'
+  let gitDirLocation = './.git'
   if (!fs.existsSync(gitDirLocation)) {
     throw new Error('Cannot find file ' + gitDirLocation)
   }
 
   if (!fs.lstatSync(gitDirLocation).isDirectory()) {
-    const unparsedText = '' + fs.readFileSync(gitDirLocation)
+    let unparsedText = '' + fs.readFileSync(gitDirLocation)
     gitDirLocation = unparsedText.substring('gitdir: '.length).trim()
   }
 
