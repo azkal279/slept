@@ -1,4 +1,4 @@
-let baseConfig = require('./scripts/jest.base')
+const baseConfig = require('./scripts/jest.base')
 // jest.config.js
 
 // Note: If you are using babel version 7 you have to install babel-jest with
