@@ -6,20 +6,20 @@ import { ListLifeCycleTypes, IListKVMap, IListResponse, IList } from '@alist/cor
 import useForceUpdate from './useForceUpdate'
 import { IPaginationProps, IPaginationHook } from '../types'
 
-export const usePagination = (props: IPaginationProps = {}, propList?: IList): IPaginationHook => {
-    const { multipleId: propsMultipleId } = props
-    const list = propList || useContext(ListContext)
-    const { id: contextMultipleId } = useContext(MultipleContext) || {}
-    const multipleId = propsMultipleId || contextMultipleId
-    const listProps = useContext(ListPropsContext) || {}
+export var usePagination = (props: IPaginationProps = {}, propList?: IList): IPaginationHook => {
+    var { multipleId: propsMultipleId } = props
+    var list = propList || useContext(ListContext)
+    var { id: contextMultipleId } = useContext(MultipleContext) || {}
+    var multipleId = propsMultipleId || contextMultipleId
+    var listProps = useContext(ListPropsContext) || {}
     let hideWhenInvalid = listProps.hideWhenInvalid || false
 
     let pageData
     let setCurrentPage
     // 多实例列表的跳转页面通过setMultipleData实现
     if (multipleId !== undefined) {
-        const multipleData = list.getMultipleData()
-        const { dataList, ...others } = multipleData[multipleId] as IListKVMap<IListResponse> || {}
+        var multipleData = list.getMultipleData()
+        var { dataList, ...others } = multipleData[multipleId] as IListKVMap<IListResponse> || {}
         setCurrentPage = (currentPage: number) => list.setMultipleData({ [multipleId]: { currentPage }})
         pageData = { ...others }
     // 常规的跳转页面方法
@@ -28,10 +28,10 @@ export const usePagination = (props: IPaginationProps = {}, propList?: IList): I
         setCurrentPage = list.setCurrentPage
     }
         
-    const forceUpdate = useForceUpdate()
-    const refresh = (opts) => {        
-        const { payload } = opts;
-        const { notifyId } = payload || {}      
+    var forceUpdate = useForceUpdate()
+    var refresh = (opts) => {        
+        var { payload } = opts;
+        var { notifyId } = payload || {}      
         if (notifyId) {
             if (multipleId !== undefined) {
                 if (notifyId && notifyId.some(id => id === multipleId)) {
@@ -46,7 +46,7 @@ export const usePagination = (props: IPaginationProps = {}, propList?: IList): I
     }
 
     useEffect(() => {
-        const id = list.subscribe(ListLifeCycleTypes.ON_LIST_PAGINATION_REFRESH, refresh)
+        var id = list.subscribe(ListLifeCycleTypes.ON_LIST_PAGINATION_REFRESH, refresh)
         return function cleanup () {
             list.unSubscribe(id)
         }
