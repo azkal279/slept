@@ -22,12 +22,12 @@ import defaultQuery from './defaultQuery'
 
 function createList(props: IListProps = {}): IList {
   // 渲染相关的设置都在API层完成，core层只管数据，和操作数据的方法
-  var list = new ListCore(props)
-  var lifeCycles = new LifeCylcesCore({ lifeCycles: props.lifeCycles })
+  const list = new ListCore(props)
+  const lifeCycles = new LifeCylcesCore({ lifeCycles: props.lifeCycles })
 
-  var universalNotify = opts => {
+  const universalNotify = opts => {
     lifeCycles.notify(opts)
-    var filterInstance = list.getFilterInstance()
+    const filterInstance = list.getFilterInstance()
     if (filterInstance) {
       filterInstance.notify(
         ListLifeCycleTypes.LIST_LIFECYCLES_FORM_GOD_MODE,
@@ -36,32 +36,32 @@ function createList(props: IListProps = {}): IList {
     }
   }
 
-  var mode = list.getMode()
+  const mode = list.getMode()
 
   // 通知UI重新渲染的方法
-  var refreshTable = (notifyId?: string[]) =>
+  const refreshTable = (notifyId?: string[]) =>
     lifeCycles.notify({
       type: ListLifeCycleTypes.ON_LIST_TABLE_REFRESH,
       payload: { notifyId }
     })
-  var refreshLoading = (notifyId?: string[]) =>
+  const refreshLoading = (notifyId?: string[]) =>
     lifeCycles.notify({
       type: ListLifeCycleTypes.ON_LIST_LOADING_REFRESH,
       payload: { notifyId }
     })
-  var refreshPagination = (notifyId?: string[]) =>
+  const refreshPagination = (notifyId?: string[]) =>
     lifeCycles.notify({
       type: ListLifeCycleTypes.ON_LIST_PAGINATION_REFRESH,
       payload: { notifyId }
     })
-  var refreshValidateConfig = (notifyId?: string[]) =>
+  const refreshValidateConfig = (notifyId?: string[]) =>
     lifeCycles.notify({
       type: ListLifeCycleTypes.ON_LIST_VALIDATE_CONFIG_REFRESH,
       payload: { notifyId }
     })
-  // var refreshConsumer = () => lifeCycles.notify({ type: ListLifeCycleTypes.ON_LIST_CONSUMER_REFRESH })
-  // var refreshFilter = () => lifeCycles.notify({ type: ListLifeCycleTypes.ON_LIST_FILTER_REFRESH })
-  var refreshSelection = (notifyId?: string[]) =>
+  // const refreshConsumer = () => lifeCycles.notify({ type: ListLifeCycleTypes.ON_LIST_CONSUMER_REFRESH })
+  // const refreshFilter = () => lifeCycles.notify({ type: ListLifeCycleTypes.ON_LIST_FILTER_REFRESH })
+  const refreshSelection = (notifyId?: string[]) =>
     lifeCycles.notify({
       type: ListLifeCycleTypes.ON_LIST_SELECTION_REFRESH,
       payload: { notifyId }
@@ -81,7 +81,7 @@ function createList(props: IListProps = {}): IList {
   // 初始化搜索框的默认值, 用于重置
 
   // 请求列表
-  var fetch = async (extraFilterData?: IListFilterData) => {
+  const fetch = async (extraFilterData?: IListFilterData) => {
     if (mode === ModeType.DATASOURCE) {
       return
     }
@@ -91,15 +91,15 @@ function createList(props: IListProps = {}): IList {
     }
 
     // 请求时需要执行校验
-    var filterInstance = list.getFilterInstance()
+    const filterInstance = list.getFilterInstance()
     if (filterInstance) {
       if (Array.isArray(filterInstance.ignoreValidationKeys)) {
-        var validatePath = filterInstance.ignoreValidationKeys.join(',')
+        const validatePath = filterInstance.ignoreValidationKeys.join(',')
         await filterInstance.validate(`*(!${validatePath})`)
       } else {
         await filterInstance.validate()
       }
-      var { errors } = filterInstance.getFormState(state => {
+      const { errors } = filterInstance.getFormState(state => {
         return { errors: state.errors }
       })
       if (errors.length) {
@@ -107,9 +107,9 @@ function createList(props: IListProps = {}): IList {
       }
     }
 
-    var pageData = list.getPageData() // 分页数据
-    var filterData = list.getFilterData() // 搜索数据
-    var { sorter, sortLocal } = list.getSortConfig() // 排序数据
+    const pageData = list.getPageData() // 分页数据
+    const filterData = list.getFilterData() // 搜索数据
+    const { sorter, sortLocal } = list.getSortConfig() // 排序数据
     let sortData = {}
     if (!isFn(sortLocal)) {
       sortData = sorter
@@ -186,7 +186,7 @@ function createList(props: IListProps = {}): IList {
     }
 
     // 执行数据更新
-    var { dataList, total, pageSize, currentPage, multipleData, totalPages } =
+    const { dataList, total, pageSize, currentPage, multipleData, totalPages } =
       result || {}
 
     // 多实例模式
@@ -277,7 +277,7 @@ function createList(props: IListProps = {}): IList {
   }
 
   // 清理查询条件
-  var clear = (fnOpts?: IListFunctionOptions) => {
+  const clear = (fnOpts?: IListFunctionOptions) => {
     // 生命周期：清理查询条件
     lifeCycles.notify({
       type: ListLifeCycleTypes.ON_LIST_CLEAR,
@@ -296,7 +296,7 @@ function createList(props: IListProps = {}): IList {
   }
 
   // 重置，如果存在默认值，会恢复到默认值
-  var reset = (fnOpts?: IListFunctionOptions) => {
+  const reset = (fnOpts?: IListFunctionOptions) => {
     // 生命周期：清理查询条件
     lifeCycles.notify({
       type: ListLifeCycleTypes.ON_LIST_RESET,
@@ -317,7 +317,7 @@ function createList(props: IListProps = {}): IList {
   }
 
   // 分页器跳转页面时使用
-  var setCurrentPage = (currentPage: number) => {
+  const setCurrentPage = (currentPage: number) => {
     list.setCurrentPage(Number(currentPage))
     if (mode === ModeType.DATASOURCE) {
       // dataSource模式下，直接更新表格
@@ -328,7 +328,7 @@ function createList(props: IListProps = {}): IList {
     }
   }
 
-  var setPageSize = (pageSize: number) => {
+  const setPageSize = (pageSize: number) => {
     list.setPageSize(Number(pageSize))
     if (mode === ModeType.DATASOURCE) {
       // dataSource模式下，直接更新表格
@@ -341,28 +341,28 @@ function createList(props: IListProps = {}): IList {
   }
 
   // 刷新列表
-  var refresh = async (opts?: IListFunctionOptions) => {
-    var refreshOpts = opts || { reset: true }
+  const refresh = async (opts?: IListFunctionOptions) => {
+    const refreshOpts = opts || { reset: true }
     // 默认刷新都是清空，支持reset设置为false
     if (refreshOpts.reset === true) {
       list.resetPage()
     }
-    var result = await fetch(refreshOpts.filterData)
+    const result = await fetch(refreshOpts.filterData)
     return result
   }
 
   // 刷新table
-  var setTableProps = async (tableProps, fnOpts?: IListFunctionOptions) => {
+  const setTableProps = async (tableProps, fnOpts?: IListFunctionOptions) => {
     list.setTableProps(tableProps)
     if (!fnOpts || fnOpts.withRender) {
       refreshTable()
     }
   }
 
-  var hasSetColumns = () => columnsChange
+  const hasSetColumns = () => columnsChange
 
-  var setColumns = (cols: any[], opts) => {
-    var { notifyId, init = false } = opts || {}
+  const setColumns = (cols: any[], opts) => {
+    const { notifyId, init = false } = opts || {}
     if (!init) {
       columnsChange = true
     }
@@ -371,7 +371,7 @@ function createList(props: IListProps = {}): IList {
   }
 
   // 设置dataSource
-  var setDataSource = (dataSource, fnOpts?: IListFunctionOptions) => {
+  const setDataSource = (dataSource, fnOpts?: IListFunctionOptions) => {
     list.setDataSource(dataSource)
     if (mode === ModeType.DATASOURCE) {
       list.setPageData({
@@ -391,11 +391,11 @@ function createList(props: IListProps = {}): IList {
   }
 
   // 设置多实例数据
-  var setMultipleData = (
+  const setMultipleData = (
     multipleData: IListMultipleDataParams,
     fnOpts?: IListFunctionOptions
   ) => {
-    var multipleKeys = Object.keys(multipleData)
+    const multipleKeys = Object.keys(multipleData)
     list.setMultipleData(multipleData)
 
     if (!fnOpts || fnOpts.withRender) {
@@ -405,11 +405,11 @@ function createList(props: IListProps = {}): IList {
   }
 
   // 设置多实例分页数据
-  var setMultiplePageSize = (
+  const setMultiplePageSize = (
     multiplePageSize: IListMultiplePageSize,
     fnOpts?: IListFunctionOptions
   ) => {
-    var multipleKeys = Object.keys(multiplePageSize)
+    const multipleKeys = Object.keys(multiplePageSize)
     list.setMultiplePageSize(multiplePageSize)
 
     if (!fnOpts || fnOpts.withRender) {
@@ -419,10 +419,10 @@ function createList(props: IListProps = {}): IList {
   }
 
   // 设置页面参数, 动态维护url参数
-  var setParams = (nextParams, fnOpts?: IListFunctionOptions) => {
+  const setParams = (nextParams, fnOpts?: IListFunctionOptions) => {
     params = { ...params, ...nextParams }
-    var { enableInvalid = false } = fnOpts || {}
-    var searchParams = new URLSearchParams(location.search)
+    const { enableInvalid = false } = fnOpts || {}
+    const searchParams = new URLSearchParams(location.search)
     Object.keys(nextParams).forEach(key => {
       let targetParams
       if (enableInvalid || [null, undefined].indexOf(nextParams[key]) === -1) {
@@ -435,23 +435,23 @@ function createList(props: IListProps = {}): IList {
       }
     })
 
-    var search = searchParams.toString()
-    var hashStr = (location.hash || '').split('?')[0]
-    var newUrl = `${location.origin}${location.pathname}${hashStr}${
+    const search = searchParams.toString()
+    const hashStr = (location.hash || '').split('?')[0]
+    const newUrl = `${location.origin}${location.pathname}${hashStr}${
       search ? '?' + search : ''
     }`
     window.history.replaceState(params, undefined, newUrl)
   }
 
   // 设置loading
-  var setLoading = (loading: boolean, fnOpts?: IListFunctionOptions) => {
+  const setLoading = (loading: boolean, fnOpts?: IListFunctionOptions) => {
     list.setLoading(loading)
     if (!fnOpts || fnOpts.withRender) {
       refreshLoading()
     }
   }
 
-  var setSelectionConfig = (
+  const setSelectionConfig = (
     selectionConfig: IListSelectionConfig,
     fnOpts?: IListFunctionOptions
   ) => {
@@ -462,33 +462,33 @@ function createList(props: IListProps = {}): IList {
     }
   }
 
-  var disableSelectionConfig = () => {
+  const disableSelectionConfig = () => {
     setSelectionConfig(null)
   }
 
   // 设置校验规则
-  var setValidateConfig = validateConfig => {
+  const setValidateConfig = validateConfig => {
     list.setValidateConfig(validateConfig)
     refreshValidateConfig()
   }
 
   // 获取URL参数
-  var getParams = () => params
+  const getParams = () => params
 
   // 设置url
-  var setUrl = (nextUrl: string, fnOpts?: IListFunctionOptions) => {
+  const setUrl = (nextUrl: string, fnOpts?: IListFunctionOptions) => {
     url = nextUrl
     if (!fnOpts || fnOpts.withFetch) {
       fetch()
     }
   }
 
-  var getUrl = () => {
+  const getUrl = () => {
     return url
   }
 
   // 设置query
-  var setQuery = (nextQuery: IListQuery, fnOpts?: IListFunctionOptions) => {
+  const setQuery = (nextQuery: IListQuery, fnOpts?: IListFunctionOptions) => {
     query = nextQuery
     if (!fnOpts || fnOpts.withFetch) {
       fetch()
@@ -496,9 +496,9 @@ function createList(props: IListProps = {}): IList {
   }
 
   // 适配搜索区域副作用
-  var getFilterEffects = props => {
-    var noop = () => {}
-    var { effects = noop } = props || {}
+  const getFilterEffects = props => {
+    const noop = () => {}
+    const { effects = noop } = props || {}
     return ($, actions) => {
       // 搜索区域初始化完成
       $('onFormMount').subscribe(state => {
@@ -537,7 +537,7 @@ function createList(props: IListProps = {}): IList {
 
       // 搜索区域校验失败
       $('onFormSubmitValidateFailed').subscribe(state => {
-        var { errors, warnings } = state
+        const { errors, warnings } = state
         lifeCycles.notify({
           type: ListLifeCycleTypes.ON_LIST_VALIDATE_END,
           ctx: listAPI,
@@ -547,7 +547,7 @@ function createList(props: IListProps = {}): IList {
 
       // 搜索区域校验成功
       $('onFormSubmitValidateSuccess').subscribe(state => {
-        var { errors, warnings } = state
+        const { errors, warnings } = state
         lifeCycles.notify({
           type: ListLifeCycleTypes.ON_LIST_VALIDATE_END,
           ctx: listAPI,
@@ -558,8 +558,8 @@ function createList(props: IListProps = {}): IList {
     }
   }
 
-  var toggleExpandStatus = () => {
-    var filterInstance = list.getFilterInstance()
+  const toggleExpandStatus = () => {
+    const filterInstance = list.getFilterInstance()
     if (expandStatus === 'expand') {
       expandStatus = 'collapse'
       filterInstance.notify(ListLifeCycleTypes.ON_LIST_FILTER_ITEM_COLLAPSE)
@@ -577,13 +577,13 @@ function createList(props: IListProps = {}): IList {
     }
   }
 
-  var getExpandStatus = (): ExpandStatus => {
+  const getExpandStatus = (): ExpandStatus => {
     return expandStatus
   }
 
-  var initSyncFilterData = (executeNow = false) => {
+  const initSyncFilterData = (executeNow = false) => {
     // 同步params到搜索区域上
-    var syncFilterData = {}
+    const syncFilterData = {}
     Object.keys(params || {}).forEach(paramField => {
       if (
         [].concat(paramsFields || []).some(f => f === '*' || f === paramField)
@@ -607,7 +607,7 @@ function createList(props: IListProps = {}): IList {
       }
     }
 
-    var filterInstance = list.getFilterInstance()
+    const filterInstance = list.getFilterInstance()
     if (filterInstance) {
       filterInstance.subscribe(({ type }) => {
         if (type === 'onFormSubmit') {
@@ -621,7 +621,7 @@ function createList(props: IListProps = {}): IList {
     }
   }
 
-  var listAPI: IList = {
+  const listAPI: IList = {
     // 监听相关
     notify: (type: string | ListLifeCycleTypes, payload?: any) => {
       lifeCycles.notify({ type, payload, ctx: listAPI })
@@ -732,11 +732,11 @@ function createList(props: IListProps = {}): IList {
   listAPI.subscribe(
     ListLifeCycleTypes.ON_LIST_FILTER_ITEM_CHANGE,
     fieldChangeData => {
-      var { payload: fieldState } = fieldChangeData
-      var { name, value } = fieldState
+      const { payload: fieldState } = fieldChangeData
+      const { name, value } = fieldState
       if ([].concat(paramsFields || []).some(f => f === '*' || f === name)) {
         // 设置filter当前命中的字段值
-        var nextTargetParams = { [name]: value }
+        const nextTargetParams = { [name]: value }
         lifeCycles.notify({
           type: ListLifeCycleTypes.ON_LIST_PARAMS_CHANGE,
           ctx: listAPI,
@@ -749,14 +749,14 @@ function createList(props: IListProps = {}): IList {
 
   // 排序触发时，发起请求
   listAPI.subscribe(ListLifeCycleTypes.ON_LIST_SORT, ({ payload }) => {
-    var { sorter } = payload
+    const { sorter } = payload
     list.setSortConfig({ sorter })
-    var { sortLocal, ...othersSortConfig } = list.getSortConfig()
+    const { sortLocal, ...othersSortConfig } = list.getSortConfig()
     if (!isFn(sortLocal)) {
       fetch()
     } else {
-      var ds = list.getDataSource()
-      var sortDs = sortLocal(ds, othersSortConfig)
+      const ds = list.getDataSource()
+      const sortDs = sortLocal(ds, othersSortConfig)
       if (Array.isArray(sortDs)) {
         list.setPaginationDataSource(sortDs)
         refreshTable()
