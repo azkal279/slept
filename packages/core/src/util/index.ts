@@ -1,1 +1,1 @@
-export const isFn = (fn: any) => typeof fn === 'function'
+export let isFn = (fn: any) => typeof fn === 'function'
